@@ -18,6 +18,10 @@ docker run --rm --interactive --tty \
     --volume $PWD:/app \
     composer install
 
+# give php user access permission to execution folder
+./run chown -R www-data:www-data /var/www/vendor
+
+
 # NPM dependencies
 echo "### Installing npm dependencies ###"
 ./run npm install
