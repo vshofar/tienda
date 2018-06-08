@@ -3,6 +3,7 @@ services:
 
   # The Application
   app:
+    container_name: app-container
     build:
       context: ./
       dockerfile: app.dockerfile
@@ -11,10 +12,15 @@ services:
       - ./:/var/www
     environment:
       - "DB_PORT=3306"
-      - "DB_HOST=database"
+      - "DB_HOST=database-container"
+      - "DB_DATABASE=homestead"
+      - "DB_USERNAME=homestead"
+      - "DB_PASSWORD=secret"
+    
 
   # The Web Server
   web:
+    container_name: web-container  
     build:
       context: ./
       dockerfile: web.dockerfile
@@ -23,10 +29,13 @@ services:
       - app
     ports:
       - 8080:80
+    
 
   # The Database
   database:
+    container_name: database-container
     image: mysql:5.7
+    hostname: homestead
     volumes:
       - dbdata:/var/lib/mysql
     environment:
@@ -37,5 +46,6 @@ services:
     ports:
         - "33061:3306"
 
+  
 volumes:
   dbdata:
